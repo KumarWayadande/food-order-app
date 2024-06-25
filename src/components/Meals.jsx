@@ -1,0 +1,25 @@
+import { useEffect, useState } from "react";
+
+export default function Meals() {
+  const [loadedMeals, setLoadedMeals] = useState([]);
+
+  useEffect(() => {
+    async function getData() {
+      try {
+        const response = await fetch("http://localhost:3000/meals");
+        if (!response.ok) throw new Error("ERROR:Could not fetch the data...");
+        const meals = await response.json();
+        setLoadedMeals(meals);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getData();
+  }, []);
+
+  return <ul id="meals">{
+    loadedMeals.map(meal => {
+        return <li key={meal.id}>{meal.name}</li>
+    })}
+    </ul>;
+}
